@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+    <?php
+
+include("db.php");
+$user_id = $_REQUEST['user_id'];
+
+$result=mysqli_query($con,"select user_id,first_name,last_name, email, password from user_info where user_id='$user_id'")or die ("query 1 incorrect.......");
+
+list($user_id,$first_name,$last_name,$email,$user_password)=mysqli_fetch_array($result);
+
+if(isset($_POST['btn_save'])) 
+{
+
+$first_name=$_POST['first_name'];
+$last_name=$_POST['last_name'];
+$email=$_POST['email'];
+$user_password=$_POST['password'];
+
+mysqli_query($con,"update user_info set first_name='$first_name', last_name='$last_name', email='$email', password='$user_password' where user_id='$user_id'")or die("Query 2 is inncorrect..........");
+
+header("location: register.php");
+mysqli_close($con);
+}
+include ("header.php");
+?>
+    <body>
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="container-fluid">
+        <div class="col-md-5 mx-auto">
+            <div class="card">
+              <div class="card-header card-header-primary">
+                <h5 class="title">Edit User</h5>
+              </div>
+              <form action="index_1.php" name="form" method="post" enctype="multipart/form-data">
+              <div class="card-body">
+                
+                  <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id;?>" required/>
+                    <div class="col-md-12 ">
+                      <div class="form-group">
+                        <label>First name</label>
+                        <input type="text" id="first_name" name="first_name"  class="form-control" value="<?php echo $first_name; ?>"required >
+                      </div>
+                    </div>
+                    <div class="col-md-12 ">
+                      <div class="form-group">
+                        <label>Last name</label>
+                        <input type="text" id="last_name" name="last_name" class="form-control" value="<?php echo $last_name; ?>"required >
+                      </div>
+                    </div>
+                    <div class="col-md-12 ">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email"  id="email" name="email" class="form-control" value="<?php echo $email; ?>" required>
+                      </div>
+                    </div>
+                    <div class="col-md-12 ">
+                      <div class="form-group">
+                        <label >Password</label>
+                        <input type="password" name="password" id="password" class="form-control" value="<?php echo $user_password; ?>" required>
+                      </div>
+                    </div>
+                  
+                  
+                  
+                
+              </div>
+              <div class="card-footer">
+                <button type="submit" id="btn_save" name="btn_save" class="btn btn-fill btn-primary">Update</button>
+              </div>
+              </form>    
+            </div>
+          </div>
+        </div>
+      </div>
+      </body>
+</html>
+<br><br><br><br>
+      <?php
+include "footer.php";
+?>
